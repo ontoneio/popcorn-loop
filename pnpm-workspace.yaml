@@ -1,0 +1,8 @@
+packages:
+  - apps/*
+  - packages/*
+  - '!**/test/**'
+
+onlyBuiltDependencies:
+  - esbuild
+  - sharp

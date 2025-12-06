@@ -1,0 +1,44 @@
+# Gitignore for Astro projects
+
+# Node.js dependencies
+/node_modules
+.pnp.*
+
+# Build output
+/dist
+/build
+.astro/
+.cache/
+
+# Log files
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# Editor directories and files
+.vscode/
+.nx/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Astro specific
+/public/assets
+/public/dist
+
+# Other
+coverage/
+*.log
+*.tgz
+*.zip
+.npm
