@@ -12,5 +12,14 @@
 	},
 	"observability": {
     "enabled": true
-  }
+  },
+	"durable_objects": {
+		"bindings": [
+			{
+				"name": "COLLABORATIVE_ROOM",
+				"class_name": "CollaborativeRoom",
+				"script_name": "popcorn-loop"
+			}
+		]
+	}
 }
