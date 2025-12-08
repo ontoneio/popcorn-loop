@@ -46,13 +46,13 @@ importers:
         version: 0.4.3(hono@4.10.7)(zod@3.25.76)
       '@workspace/shared-types':
         specifier: workspace:*
-        version: link:../../libs/shared/types
+        version: link:../../packages/shared/types
       '@workspace/shared-utils':
         specifier: workspace:*
-        version: link:../../libs/shared/utils
+        version: link:../../packages/shared/utils
       '@workspace/shared-validators':
         specifier: workspace:*
-        version: link:../../libs/shared/validators
+        version: link:../../packages/shared/validators
       animejs:
         specifier: ^3.2.2
         version: 3.2.2
@@ -88,15 +88,15 @@ importers:
         specifier: ^3.95.0
         version: 3.114.15(@cloudflare/workers-types@4.20251205.0)
 
-  libs/shared/types: {}
+  packages/shared/types: {}
 
-  libs/shared/utils:
+  packages/shared/utils:
     dependencies:
       nanoid:
         specifier: ^5.0.9
         version: 5.1.6
 
-  libs/shared/validators:
+  packages/shared/validators:
     dependencies:
       zod:
         specifier: ^3.24.0

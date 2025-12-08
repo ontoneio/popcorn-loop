@@ -12,9 +12,9 @@ export default defineConfig({
   vite: {
     resolve: {
       alias: {
-        '@workspace/shared-types': '/home/jam/projects/popcorn-loop/libs/shared/types/src/index.ts',
-        '@workspace/shared-validators': '/home/jam/projects/popcorn-loop/libs/shared/validators/src/index.ts',
-        '@workspace/shared-utils': '/home/jam/projects/popcorn-loop/libs/shared/utils/src/index.ts',
+        '@workspace/shared-types': '/home/jam/projects/popcorn-loop/packages/shared/types/src/index.ts',
+        '@workspace/shared-validators': '/home/jam/projects/popcorn-loop/packages/shared/validators/src/index.ts',
+        '@workspace/shared-utils': '/home/jam/projects/popcorn-loop/packages/shared/utils/src/index.ts',
       },
     },
   },

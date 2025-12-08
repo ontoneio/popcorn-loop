@@ -1,0 +1,288 @@
+---
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Join Session - Popcorn Loop</title>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        background: linear-gradient(135deg, #000000 0%, #1a0033 50%, #000033 100%);
+        color: #fff;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 2rem;
+      }
+      
+      .container {
+        max-width: 600px;
+        width: 100%;
+      }
+      
+      .card {
+        background: rgba(0, 0, 0, 0.6);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 24px;
+        padding: 3rem;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+      }
+      
+      h1 {
+        font-size: 2.5rem;
+        background: linear-gradient(135deg, #FF0080, #00D9FF);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-bottom: 0.5rem;
+      }
+      
+      .subtitle {
+        color: #999;
+        margin-bottom: 2rem;
+      }
+      
+      .form-group {
+        margin-bottom: 1.5rem;
+      }
+      
+      label {
+        display: block;
+        color: #00D9FF;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+      }
+      
+      input {
+        width: 100%;
+        padding: 1rem;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 8px;
+        color: #fff;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+      }
+      
+      input:focus {
+        outline: none;
+        border-color: #00D9FF;
+        box-shadow: 0 0 0 3px rgba(0, 217, 255, 0.1);
+      }
+      
+      .btn {
+        width: 100%;
+        padding: 1.25rem;
+        font-size: 1.2rem;
+        font-weight: 600;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        margin-top: 1rem;
+      }
+      
+      .btn-primary {
+        background: linear-gradient(135deg, #FF0080, #00D9FF);
+        color: white;
+      }
+      
+      .btn-primary:hover:not(:disabled) {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 30px rgba(255, 0, 128, 0.6);
+      }
+      
+      .btn-primary:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+      
+      .btn-secondary {
+        background: transparent;
+        color: #999;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        margin-top: 0.5rem;
+      }
+      
+      .btn-secondary:hover {
+        border-color: #00D9FF;
+        color: #00D9FF;
+      }
+      
+      .loading {
+        text-align: center;
+        color: #00D9FF;
+        margin-top: 1rem;
+        display: none;
+      }
+      
+      .error {
+        background: rgba(255, 0, 0, 0.1);
+        border: 1px solid rgba(255, 0, 0, 0.3);
+        color: #ff6b6b;
+        padding: 1rem;
+        border-radius: 8px;
+        margin-top: 1rem;
+        display: none;
+      }
+      
+      .info-box {
+        background: rgba(0, 217, 255, 0.1);
+        border: 1px solid rgba(0, 217, 255, 0.3);
+        padding: 1rem;
+        border-radius: 8px;
+        margin-bottom: 2rem;
+      }
+      
+      .info-box p {
+        color: #aaa;
+        font-size: 0.9rem;
+        line-height: 1.6;
+      }
+      
+      .room-code-input {
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        font-weight: 600;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="card">
+        <h1>Join Session</h1>
+        <p class="subtitle">Enter a room code to join an existing session</p>
+        
+        <div class="info-box">
+          <p>
+            <strong>🎵 Joining a session:</strong><br>
+            Ask the session creator for the 8-character room code.
+            You'll be added to their collaborative workspace.
+          </p>
+        </div>
+        
+        <form id="joinForm">
+            <div class="form-group">
+                <label for="userName">Your Name</label>
+                <input 
+                type="text" 
+                id="userName" 
+                name="userName" 
+                placeholder="Enter your name"
+                required
+                maxlength="50"
+                />
+            </div>
+            
+            <div class="form-group">
+                <label for="roomId">Room Code</label>
+                <input 
+                type="text" 
+                id="roomId" 
+                name="roomId" 
+                placeholder="Enter 8-character code"
+                class="room-code-input"
+                required
+                maxlength="8"
+                minlength="8"
+                />
+            </div>
+          
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary" id="joinBtn">
+                    Join Session
+                </button>
+            </div>
+            
+            <div class="form-group" style="text-align: center;padding-top: 1rem;">
+                <a href="/" class="btn btn-secondary">
+                ← Back to Home
+                </a>
+            </div>
+        </form>
+        
+        <div class="loading" id="loading">
+          Joining session...
+        </div>
+        
+        <div class="error" id="error"></div>
+      </div>
+    </div>
+
+    <script>
+      import { generateUserId, isValidRoomId } from '@workspace/shared-utils';
+      
+      const form = document.getElementById('joinForm') as HTMLFormElement;
+      const joinBtn = document.getElementById('joinBtn') as HTMLButtonElement;
+      const loading = document.getElementById('loading') as HTMLDivElement;
+      const errorDiv = document.getElementById('error') as HTMLDivElement;
+      const roomIdInput = document.getElementById('roomId') as HTMLInputElement;
+      
+      const userId = generateUserId();
+      
+      // Auto-uppercase room code as user types
+      roomIdInput.addEventListener('input', (e) => {
+        const target = e.target as HTMLInputElement;
+        target.value = target.value.toUpperCase();
+      });
+      
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        const formData = new FormData(form);
+        const userName = formData.get('userName') as string;
+        const roomId = formData.get('roomId') as string;
+        
+        if (!userName.trim()) {
+          showError('Please enter your name');
+          return;
+        }
+        
+        if (!isValidRoomId(roomId)) {
+          showError('Room code must be exactly 8 characters');
+          return;
+        }
+        
+        joinBtn.disabled = true;
+        loading.style.display = 'block';
+        errorDiv.style.display = 'none';
+        
+        try {
+          // Check if room exists
+          const response = await fetch(`/api/sessions/${roomId}`);
+          
+          if (!response.ok) {
+            if (response.status === 404) {
+              throw new Error('Room not found. Please check the code and try again.');
+            }
+            throw new Error('Failed to join session');
+          }
+          
+          // Redirect to the room
+          window.location.href = `/room/${roomId}?userId=${userId}&userName=${encodeURIComponent(userName)}`;
+          
+        } catch (error) {
+          console.error('Error joining session:', error);
+          const message = error instanceof Error ? error.message : 'Failed to join session. Please try again.';
+          showError(message);
+          joinBtn.disabled = false;
+          loading.style.display = 'none';
+        }
+      });
+      
+      function showError(message: string) {
+        errorDiv.textContent = message;
+        errorDiv.style.display = 'block';
+      }
+    </script>
+  </body>
+</html>

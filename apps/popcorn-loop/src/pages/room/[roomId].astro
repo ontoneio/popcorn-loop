@@ -1,0 +1,524 @@
+---
+const { roomId } = Astro.params;
+
+if (!roomId) {
+  return Astro.redirect('/');
+}
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Room {roomId} - Popcorn Loop</title>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        background: #000;
+        color: #fff;
+        height: 100vh;
+        overflow: hidden;
+      }
+      
+      .app-container {
+        display: grid;
+        grid-template-rows: auto 1fr auto;
+        height: 100vh;
+      }
+      
+      .header {
+        background: rgba(0, 0, 0, 0.9);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        padding: 1rem 2rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      
+      .header-left {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+      }
+      
+      .logo {
+        font-size: 1.5rem;
+      }
+      
+      .room-code {
+        background: rgba(0, 217, 255, 0.1);
+        border: 1px solid rgba(0, 217, 255, 0.3);
+        padding: 0.5rem 1rem;
+        border-radius: 8px;
+        font-family: monospace;
+        font-weight: 600;
+        letter-spacing: 2px;
+      }
+      
+      .header-right {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+      }
+      
+      .status-indicator {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem 1rem;
+        border-radius: 8px;
+        font-size: 0.9rem;
+      }
+      
+      .status-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+      }
+      
+      .status-connected {
+        background: rgba(0, 255, 0, 0.1);
+        color: #00ff00;
+      }
+      
+      .status-connected .status-dot {
+        background: #00ff00;
+        box-shadow: 0 0 10px #00ff00;
+      }
+      
+      .status-disconnected {
+        background: rgba(255, 0, 0, 0.1);
+        color: #ff6b6b;
+      }
+      
+      .status-disconnected .status-dot {
+        background: #ff6b6b;
+      }
+      
+      .main-content {
+        display: grid;
+        grid-template-columns: 300px 1fr 300px;
+        height: 100%;
+        overflow: hidden;
+      }
+      
+      .sidebar {
+        background: rgba(0, 0, 0, 0.6);
+        border-right: 1px solid rgba(255, 255, 255, 0.1);
+        padding: 1.5rem;
+        overflow-y: auto;
+      }
+      
+      .sidebar-right {
+        border-left: 1px solid rgba(255, 255, 255, 0.1);
+        border-right: none;
+      }
+      
+      .sidebar h2 {
+        color: #00D9FF;
+        font-size: 1.2rem;
+        margin-bottom: 1rem;
+      }
+      
+      .center-panel {
+        display: flex;
+        flex-direction: column;
+        background: #000;
+      }
+      
+      .visual-area {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+      }
+      
+      #visualCanvas {
+        width: 100%;
+        height: 100%;
+      }
+      
+      .controls-panel {
+        background: rgba(0, 0, 0, 0.9);
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        padding: 1.5rem 2rem;
+      }
+      
+      .transport-controls {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 1rem;
+      }
+      
+      .btn {
+        padding: 0.75rem 1.5rem;
+        border: none;
+        border-radius: 8px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+      
+      .btn-play {
+        background: linear-gradient(135deg, #00ff00, #00aa00);
+        color: #000;
+      }
+      
+      .btn-stop {
+        background: linear-gradient(135deg, #ff0000, #aa0000);
+        color: #fff;
+      }
+      
+      .btn:hover:not(:disabled) {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 20px rgba(255, 255, 255, 0.2);
+      }
+      
+      .btn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+      
+      .transport-info {
+        display: flex;
+        justify-content: center;
+        gap: 2rem;
+        font-family: monospace;
+        color: #999;
+      }
+      
+      .user-list {
+        list-style: none;
+      }
+      
+      .user-item {
+        background: rgba(255, 255, 255, 0.05);
+        padding: 0.75rem;
+        border-radius: 8px;
+        margin-bottom: 0.5rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      
+      .user-item.current-turn {
+        background: rgba(0, 217, 255, 0.1);
+        border: 1px solid rgba(0, 217, 255, 0.3);
+      }
+      
+      .user-item.is-you {
+        border: 1px solid rgba(255, 215, 0, 0.5);
+      }
+      
+      .loop-item {
+        background: rgba(255, 255, 255, 0.05);
+        padding: 1rem;
+        border-radius: 8px;
+        margin-bottom: 0.75rem;
+      }
+      
+      .loop-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 0.5rem;
+      }
+      
+      .loop-title {
+        font-weight: 600;
+        color: #FFD700;
+      }
+      
+      .loop-author {
+        font-size: 0.85rem;
+        color: #999;
+      }
+      
+      .placeholder {
+        text-align: center;
+        color: #666;
+        padding: 2rem;
+      }
+      
+      .loading-screen {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: #000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 9999;
+      }
+      
+      .loading-content {
+        text-align: center;
+      }
+      
+      .spinner {
+        font-size: 3rem;
+        animation: spin 1s linear infinite;
+      }
+      
+      @keyframes spin {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="loading-screen" id="loadingScreen">
+      <div class="loading-content">
+        <div class="spinner">🍿</div>
+        <p style="margin-top: 1rem; color: #00D9FF;">Connecting to session...</p>
+      </div>
+    </div>
+
+    <div class="app-container" style="display: none;" id="appContainer">
+      <header class="header">
+        <div class="header-left">
+          <span class="logo">🍿</span>
+          <div class="room-code">ROOM: {roomId}</div>
+        </div>
+        <div class="header-right">
+          <div class="status-indicator status-disconnected" id="connectionStatus">
+            <span class="status-dot"></span>
+            <span>Connecting...</span>
+          </div>
+        </div>
+      </header>
+
+      <div class="main-content">
+        <aside class="sidebar">
+          <h2>👥 Users</h2>
+          <ul class="user-list" id="userList">
+            <li class="placeholder">Loading...</li>
+          </ul>
+        </aside>
+
+        <div class="center-panel">
+          <div class="visual-area">
+            <div id="visualCanvas"></div>
+          </div>
+
+          <div class="controls-panel">
+            <div class="transport-controls">
+              <button class="btn btn-play" id="playBtn" disabled>▶ Play</button>
+              <button class="btn btn-stop" id="stopBtn" disabled>■ Stop</button>
+            </div>
+            <div class="transport-info">
+              <span>Position: <span id="position">0:0:0</span></span>
+              <span>BPM: <span id="bpm">120</span></span>
+              <span>Turn: <span id="currentTurn">—</span></span>
+            </div>
+          </div>
+        </div>
+
+        <aside class="sidebar sidebar-right">
+          <h2>🎵 Loops</h2>
+          <div id="loopList">
+            <div class="placeholder">No loops yet</div>
+          </div>
+        </aside>
+      </div>
+    </div>
+
+    <script>
+      import { WebSocketManager } from '../../lib/websocket';
+      import { audioEngine } from '../../lib/audio';
+      import { transportManager } from '../../lib/audio/TransportManager';
+      import type { ServerMessage, RoomState, User } from '@workspace/shared-types';
+      
+      // Get URL parameters
+      const urlParams = new URLSearchParams(window.location.search);
+      const userId = urlParams.get('userId');
+      const userName = urlParams.get('userName');
+      const roomId = '{roomId}';
+      
+      if (!userId || !userName) {
+        window.location.href = '/join';
+      }
+      
+      // Elements
+      const loadingScreen = document.getElementById('loadingScreen') as HTMLDivElement;
+      const appContainer = document.getElementById('appContainer') as HTMLDivElement;
+      const connectionStatus = document.getElementById('connectionStatus') as HTMLDivElement;
+      const userList = document.getElementById('userList') as HTMLUListElement;
+      const loopList = document.getElementById('loopList') as HTMLDivElement;
+      const playBtn = document.getElementById('playBtn') as HTMLButtonElement;
+      const stopBtn = document.getElementById('stopBtn') as HTMLButtonElement;
+      const positionSpan = document.getElementById('position') as HTMLSpanElement;
+      const bpmSpan = document.getElementById('bpm') as HTMLSpanElement;
+      const currentTurnSpan = document.getElementById('currentTurn') as HTMLSpanElement;
+      
+      // Initialize WebSocket
+      const wsUrl = `ws://${window.location.host}/api/sessions/${roomId}/ws?userId=${userId}&userName=${encodeURIComponent(userName!)}`;
+      const wsManager = new WebSocketManager({ url: wsUrl });
+      
+      let roomState: RoomState | null = null;
+      
+      // Handle connection status
+      wsManager.onConnection((connected) => {
+        if (connected) {
+          connectionStatus.className = 'status-indicator status-connected';
+          connectionStatus.innerHTML = '<span class="status-dot"></span><span>Connected</span>';
+        } else {
+          connectionStatus.className = 'status-indicator status-disconnected';
+          connectionStatus.innerHTML = '<span class="status-dot"></span><span>Disconnected</span>';
+        }
+      });
+      
+      // Handle messages
+      wsManager.onMessage((message: ServerMessage) => {
+        console.log('Received:', message.type, message);
+        
+        switch (message.type) {
+          case 'WELCOME':
+            roomState = message.roomState;
+            updateUI();
+            loadingScreen.style.display = 'none';
+            appContainer.style.display = 'grid';
+            initAudio();
+            break;
+            
+          case 'USER_JOINED':
+            if (roomState) {
+              roomState.users.push(message.user);
+              updateUserList();
+            }
+            break;
+            
+          case 'USER_LEFT':
+            if (roomState) {
+              roomState.users = roomState.users.filter(u => u.id !== message.userId);
+              updateUserList();
+            }
+            break;
+            
+          case 'TRANSPORT_SYNC':
+            if (roomState) {
+              roomState.transportPosition = message.transportPosition;
+              roomState.isPlaying = message.isPlaying;
+              roomState.bpm = message.bpm;
+              updateTransportDisplay();
+            }
+            break;
+        }
+      });
+      
+      // UI updates
+      function updateUI() {
+        if (!roomState) return;
+        updateUserList();
+        updateLoopList();
+        updateTransportDisplay();
+      }
+      
+      function updateUserList() {
+        if (!roomState) return;
+        
+        userList.innerHTML = '';
+        roomState.users.forEach(user => {
+          const li = document.createElement('li');
+          li.className = 'user-item';
+          if (user.id === roomState!.currentTurnUserId) {
+            li.classList.add('current-turn');
+          }
+          if (user.id === userId) {
+            li.classList.add('is-you');
+          }
+          
+          li.innerHTML = `
+            <span>${user.name}${user.id === userId ? ' (you)' : ''}</span>
+            <span style="color: #666;">${user.id === roomState!.currentTurnUserId ? '🎯' : ''}</span>
+          `;
+          userList.appendChild(li);
+        });
+        
+        const currentUser = roomState.users.find(u => u.id === roomState!.currentTurnUserId);
+        currentTurnSpan.textContent = currentUser?.name || '—';
+      }
+      
+      function updateLoopList() {
+        if (!roomState || Object.keys(roomState.loops).length === 0) {
+          loopList.innerHTML = '<div class="placeholder">No loops yet</div>';
+          return;
+        }
+        
+        loopList.innerHTML = '';
+        Object.values(roomState.loops).forEach(loop => {
+          const div = document.createElement('div');
+          div.className = 'loop-item';
+          
+          const author = roomState!.users.find(u => u.id === loop.authorId);
+          
+          div.innerHTML = `
+            <div class="loop-header">
+              <span class="loop-title">Loop ${loop.startBar}</span>
+              <span class="loop-author">${author?.name || 'Unknown'}</span>
+            </div>
+            <div style="font-size: 0.85rem; color: #999;">
+              ${loop.audioEvents.length} events · ${loop.lengthBars} bars
+            </div>
+          `;
+          loopList.appendChild(div);
+        });
+      }
+      
+      function updateTransportDisplay() {
+        if (!roomState) return;
+        positionSpan.textContent = roomState.transportPosition;
+        bpmSpan.textContent = roomState.bpm.toString();
+      }
+      
+      // Audio initialization
+      async function initAudio() {
+        try {
+          await audioEngine.init();
+          playBtn.disabled = false;
+          stopBtn.disabled = false;
+          
+          // Set up transport sync display
+          transportManager.setupMainLoop('16n');
+          
+          setInterval(() => {
+            const state = transportManager.getState();
+            positionSpan.textContent = state.position;
+          }, 100);
+          
+        } catch (error) {
+          console.error('Failed to initialize audio:', error);
+        }
+      }
+      
+      // Transport controls
+      playBtn.addEventListener('click', () => {
+        audioEngine.play();
+        wsManager.send({
+          type: 'START_PLAYBACK',
+          clientTimestamp: Date.now(),
+        });
+      });
+      
+      stopBtn.addEventListener('click', () => {
+        audioEngine.stop();
+        wsManager.send({
+          type: 'STOP_PLAYBACK',
+          clientTimestamp: Date.now(),
+        });
+      });
+      
+      // Connect WebSocket
+      wsManager.connect();
+    </script>
+  </body>
+</html>
