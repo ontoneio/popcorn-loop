@@ -21,8 +21,8 @@
     "paths": {
       "@workspace/shared-types": ["packages/shared/types/src/index.ts"],
       "@workspace/shared-validators": ["packages/shared/validators/src/index.ts"],
-      "@workspace/shared-utils": ["packages/shared/utils/src/index.ts"]
-    }
+      "@workspace/shared-utils": ["packages/shared/utils/src/index.ts"],
+    },
   },
   "exclude": ["node_modules", "tmp", "dist"]
 }

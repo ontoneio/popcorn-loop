@@ -1,13 +1,15 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
-
+import UnoCSS from 'unocss/astro'
 import cloudflare from '@astrojs/cloudflare';
 import solidJs from '@astrojs/solid-js';
 
 // https://astro.build/config
 export default defineConfig({
+
   adapter: cloudflare(),
-  integrations: [solidJs()],
+  output: 'server',
+  integrations: [ solidJs(), UnoCSS()],
   outDir: '../../dist/popcorn-loop',
   vite: {
     resolve: {

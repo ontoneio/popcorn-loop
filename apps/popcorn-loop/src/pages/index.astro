@@ -1,282 +1,103 @@
 ---
-
+import BaseLayout from "../layouts/BaseLayout.astro"
+import Header from "../components/Header.astro";
+const features = [
+  {
+	icon: "🎵",
+	title: "Live Audio Synthesis",
+	description: "Create loops with Tone.js powered synthesis. Hardware-accurate timing ensures perfect synchronization."
+  },
+  {
+	icon: "🎨",
+	title: "Generative Visuals",
+	description: "P5.js sketches react to your audio in real-time. Choose from particles, waves, geometry, and more."
+  },
+  {
+	icon: "👥",
+	title: "2-4 Person Collab",
+	description: "Take turns creating loops in a shared session. Server-authoritative state keeps everyone in sync."
+  },
+  {
+	icon: "🔄",
+	title: "Undo/Redo",
+	description: "Command pattern history lets you experiment freely. Roll back changes or redo your favorite ideas."
+  },
+  {
+	icon: "⚡",
+	title: "Real-time Sync",
+	description: "WebSocket collaboration via Cloudflare Durable Objects. Low latency, high reliability."
+  },
+  {
+	icon: "🎯",
+	title: "Turn-based Play",
+	description: "Structured creativity with turn management. Everyone gets their moment to add to the composition."
+  }
+];
 ---
-
----
----
-
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width" />
-    <meta name="generator" content={Astro.generator} />
-    <title>Popcorn Loop - Collaborative Audio/Visual Creation</title>
-    <style>
-      * { margin: 0; padding: 0; box-sizing: border-box; }
-      
-      body {
-        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-        background: linear-gradient(135deg, #000000 0%, #1a0033 50%, #000033 100%);
-        color: #fff;
-        min-height: 100vh;
-        overflow-x: hidden;
-      }
-      
-      .container {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 2rem;
-      }
-      
-      header {
-        text-align: center;
-        padding: 4rem 0;
-      }
-      
-      .logo {
-        font-size: 4rem;
-        margin-bottom: 1rem;
-        animation: bounce 2s ease-in-out infinite;
-      }
-      
-      @keyframes bounce {
-        0%, 100% { transform: translateY(0); }
-        50% { transform: translateY(-20px); }
-      }
-      
-      h1 {
-        font-size: 4rem;
-        font-weight: 900;
-        background: linear-gradient(135deg, #FF0080, #00D9FF, #FFD700);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-        margin-bottom: 1rem;
-        letter-spacing: -2px;
-      }
-      
-      .tagline {
-        font-size: 1.5rem;
-        color: #aaa;
-        margin-bottom: 3rem;
-      }
-      
-      .cta-buttons {
-        display: flex;
-        gap: 1rem;
-        justify-content: center;
-        flex-wrap: wrap;
-        margin-bottom: 4rem;
-      }
-      
-      .btn {
-        padding: 1rem 2.5rem;
-        font-size: 1.2rem;
-        font-weight: 600;
-        border: none;
-        border-radius: 8px;
-        cursor: pointer;
-        text-decoration: none;
-        transition: all 0.3s ease;
-        display: inline-block;
-      }
-      
-      .btn-primary {
-        background: linear-gradient(135deg, #FF0080, #00D9FF);
-        color: white;
-        box-shadow: 0 4px 20px rgba(255, 0, 128, 0.4);
-      }
-      
-      .btn-primary:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 30px rgba(255, 0, 128, 0.6);
-      }
-      
-      .btn-secondary {
-        background: transparent;
-        color: #00D9FF;
-        border: 2px solid #00D9FF;
-      }
-      
-      .btn-secondary:hover {
-        background: #00D9FF;
-        color: #000;
-      }
-      
-      .features {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-        gap: 2rem;
-        margin-bottom: 4rem;
-      }
-      
-      .feature-card {
-        background: rgba(255, 255, 255, 0.05);
-        backdrop-filter: blur(10px);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        border-radius: 16px;
-        padding: 2rem;
-        transition: all 0.3s ease;
-      }
-      
-      .feature-card:hover {
-        transform: translateY(-5px);
-        border-color: rgba(0, 217, 255, 0.5);
-        box-shadow: 0 10px 40px rgba(0, 217, 255, 0.2);
-      }
-      
-      .feature-icon {
-        font-size: 3rem;
-        margin-bottom: 1rem;
-        display: block;
-      }
-      
-      .feature-card h3 {
-        color: #FFD700;
-        font-size: 1.5rem;
-        margin-bottom: 0.5rem;
-      }
-      
-      .feature-card p {
-        color: #aaa;
-        line-height: 1.6;
-      }
-      
-      .demo-section {
-        background: rgba(0, 0, 0, 0.4);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        border-radius: 16px;
-        padding: 3rem;
-        text-align: center;
-        margin-bottom: 4rem;
-      }
-      
-      .demo-section h2 {
-        color: #00D9FF;
-        font-size: 2rem;
-        margin-bottom: 1rem;
-      }
-      
-      .stats {
-        display: flex;
-        justify-content: space-around;
-        flex-wrap: wrap;
-        gap: 2rem;
-        margin-top: 4rem;
-      }
-      
-      .stat {
-        text-align: center;
-      }
-      
-      .stat-number {
-        font-size: 3rem;
-        font-weight: 900;
-        background: linear-gradient(135deg, #FF0080, #FFD700);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-      }
-      
-      .stat-label {
-        color: #999;
-        font-size: 1rem;
-        text-transform: uppercase;
-        letter-spacing: 2px;
-      }
-      
-      footer {
-        text-align: center;
-        padding: 2rem 0;
-        color: #666;
-        border-top: 1px solid rgba(255, 255, 255, 0.1);
-      }
-    </style>
-  </head>
-  <body>
-    <div class="container">
-      <header>
-        <div class="logo">🍿</div>
-        <h1>popcorn-loop</h1>
-        <p class="tagline">Create collaborative audio-visual loops in real-time</p>
-        
-        <div class="cta-buttons">
-          <a href="/create" class="btn btn-primary">Create Session</a>
-          <a href="/join" class="btn btn-secondary">Join Session</a>
-        </div>
-      </header>
-
-      <section class="features">
+<BaseLayout>
+	<div class="container">
+     
+	<Header />
+      <!-- 
+	  <section class="features">
         <div class="feature-card">
           <span class="feature-icon">🎵</span>
           <h3>Live Audio Synthesis</h3>
           <p>Create loops with Tone.js powered synthesis. Hardware-accurate timing ensures perfect synchronization.</p>
         </div>
-        
-        <div class="feature-card">
-          <span class="feature-icon">🎨</span>
-          <h3>Generative Visuals</h3>
-          <p>P5.js sketches react to your audio in real-time. Choose from particles, waves, geometry, and more.</p>
-        </div>
-        
-        <div class="feature-card">
-          <span class="feature-icon">👥</span>
-          <h3>2-4 Person Collab</h3>
-          <p>Take turns creating loops in a shared session. Server-authoritative state keeps everyone in sync.</p>
-        </div>
-        
-        <div class="feature-card">
-          <span class="feature-icon">🔄</span>
-          <h3>Undo/Redo</h3>
-          <p>Command pattern history lets you experiment freely. Roll back changes or redo your favorite ideas.</p>
-        </div>
-        
-        <div class="feature-card">
-          <span class="feature-icon">⚡</span>
-          <h3>Real-time Sync</h3>
-          <p>WebSocket collaboration via Cloudflare Durable Objects. Low latency, high reliability.</p>
-        </div>
-        
-        <div class="feature-card">
-          <span class="feature-icon">🎯</span>
-          <h3>Turn-based Play</h3>
-          <p>Structured creativity with turn management. Everyone gets their moment to add to the composition.</p>
-        </div>
-      </section>
+      </section> 
+	  -->
 
-      <section class="demo-section">
-        <h2>How It Works</h2>
-        <p style="color: #aaa; font-size: 1.2rem; max-width: 800px; margin: 0 auto;">
-          Create a session, invite up to 3 friends, and take turns crafting 4-16 second musical loops. 
-          Each loop can trigger synchronized visual effects. The master clock ensures frame-perfect audio-visual alignment.
-        </p>
-        
-        <div class="stats">
-          <div class="stat">
-            <div class="stat-number">4-16s</div>
-            <div class="stat-label">Loop Length</div>
-          </div>
-          <div class="stat">
-            <div class="stat-number">2-4</div>
-            <div class="stat-label">Collaborators</div>
-          </div>
-          <div class="stat">
-            <div class="stat-number">&lt;50ms</div>
-            <div class="stat-label">Audio Latency</div>
-          </div>
-          <div class="stat">
-            <div class="stat-number">60fps</div>
-            <div class="stat-label">Visual Rate</div>
-          </div>
-        </div>
-      </section>
+	  	<section class="bg-transparent dark:bg-gray-900">
+			<div class="cta-buttons">
+				<a href="/create" class="btn btn-primary">Create Session</a>
+				<a href="/join" class="btn btn-secondary">Join Session</a>
+			</div>
+			<div class="py-8 px-4 mx-auto max-w-screen-xl sm:py-16 lg:px-6">
+				<!-- <div class="mx-auto max-w-screen-md text-center mb-8 lg:mb-16">
+					<h2 class="mb-4 text-4xl tracking-tight font-extrabold text-gray-900 dark:text-white">Secure platform, secure data</h2>
+					<p class="font-light text-gray-500 dark:text-gray-400 sm:text-xl">Here at Flowbite we focus on markets where technology, innovation, and capital can unlock long-term value and drive economic growth.</p>
+				</div> -->
+				<div class="space-y-8 md:grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 md:gap-8 xl:gap-8 md:space-y-0">
+					{ features.map(feature => (
+						<div class="p-6 bg-black rounded shadow dark:bg-gray-800 flex flex-col items-center">
+							<div class="flex justify-center items-center mb-4 w-10 h-10 rounded bg-primary-100 lg:h-12 lg:w-12 dark:bg-primary-900">
+								<span class="text-4xl">{feature.icon}</span>
+							</div>
+							<h3 class="mb-2 text-xl font-bold dark:text-white">{feature.title}</h3>
+							<p class="font-light text-gray-500 dark:text-gray-400">{feature.description}</p>
+						</div>
+						))
+					}
+				</div>
+			</div>
+		</section>
 
-      <footer>
-        <p>Built with Astro, Cloudflare, Tone.js, and P5.js</p>
-        <p style="margin-top: 0.5rem; color: #444;">Open source collaborative audio-visual creation</p>
-      </footer>
+		<section class="demo-section">
+			<h2>How It Works</h2>
+			<p style="color: #aaa; font-size: 1.2rem; max-width: 800px; margin: 0 auto;">
+			Create a session, invite up to 3 friends, and take turns crafting 4-16 second musical loops. 
+			Each loop can trigger synchronized visual effects. The master clock ensures frame-perfect audio-visual alignment.
+			</p>
+			
+			<div class="stats">
+			<div class="stat">
+				<div class="stat-number">4-16s</div>
+				<div class="stat-label">Loop Length</div>
+			</div>
+			<div class="stat">
+				<div class="stat-number">2-4</div>
+				<div class="stat-label">Collaborators</div>
+			</div>
+			<div class="stat">
+				<div class="stat-number">&lt;50ms</div>
+				<div class="stat-label">Audio Latency</div>
+			</div>
+			<div class="stat">
+				<div class="stat-number">60fps</div>
+				<div class="stat-label">Visual Rate</div>
+			</div>
+			</div>
+		</section>
     </div>
-  </body>
-</html>
+</BaseLayout>

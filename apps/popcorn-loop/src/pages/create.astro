@@ -1,4 +1,19 @@
 ---
+import SuperTokens from 'supertokens-web-js';
+import Session from 'supertokens-web-js/recipe/session';
+import Passwordless from 'supertokens-web-js/recipe/passwordless'
+
+SuperTokens.init({
+    appInfo: {
+        apiDomain: Astro.url.origin,
+        apiBasePath: "/api/auth",
+        appName: "My App 1",
+    },
+    recipeList: [
+        Session.init(),
+        Passwordless.init(),
+    ],
+});
 ---
 
 <!doctype html>
@@ -169,7 +184,20 @@
           </p>
         </div>
         
-        <form id="createForm">
+        <form id="createForm" method="POST" action=>
+
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input 
+              type="email" 
+              id="userEmail" 
+              name="userEmail" 
+              placeholder="Enter your email"
+              required
+              maxlength="90"
+            />
+          </div>
+
           <div class="form-group">
             <label for="userName">Your Name</label>
             <input 
@@ -238,6 +266,7 @@
         e.preventDefault();
         
         const formData = new FormData(form);
+        const userEmail = formData.get('userEmail') as string;
         const userName = formData.get('userName') as string;
         const bpm = parseInt(formData.get('bpm') as string);
         const loopLength = parseInt(formData.get('loopLength') as string);
@@ -269,8 +298,8 @@
           
           const data = await response.json();
           
-          // Redirect to the room
-          window.location.href = `/room/${data.roomId}?userId=${userId}&userName=${encodeURIComponent(userName)}`;
+          // Redirect to the authentication confirmation page
+        //   window.location.href = `/room/${data.roomId}?userId=${userId}&userName=${encodeURIComponent(userName)}`;
           
         } catch (error) {
           console.error('Error creating session:', error);
