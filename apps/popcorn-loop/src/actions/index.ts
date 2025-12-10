@@ -1,5 +1,7 @@
 import { defineAction } from 'astro:actions';
 import { z } from 'astro:schema';
+import { generateUserId } from '@workspace/shared-utils';
+
 
 export const server = {
   createSession: defineAction({ 

@@ -3,18 +3,21 @@
   "type": "module",
   "version": "0.0.1",
   "scripts": {
-    "dev": "astro dev",
+    "dev": "dotenvx run --debug -f .env.development -- astro dev",
     "build": "astro check && astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "wrangler:dev": "wrangler dev",
+    "wrangler:dev": "dotenvx run -f .env.development -- wrangler dev",
     "wrangler:deploy": "wrangler deploy",
     "generate-types": "wrangler types"
   },
   "dependencies": {
     "@astrojs/cloudflare": "^12.6.12",
+    "@astrojs/react": "^4.4.2",
     "@astrojs/solid-js": "^4.4.0",
     "@hono/zod-validator": "^0.4.1",
+    "@types/react": "^19.2.7",
+    "@types/react-dom": "^19.2.3",
     "@workspace/shared-types": "workspace:*",
     "@workspace/shared-utils": "workspace:*",
     "@workspace/shared-validators": "workspace:*",
@@ -22,6 +25,8 @@
     "astro": "^5.16.4",
     "hono": "^4.6.0",
     "p5": "^1.10.0",
+    "react": "^19.2.1",
+    "react-dom": "^19.2.1",
     "solid-js": "^1.9.0",
     "supertokens-auth-react": "^0.51.0",
     "tone": "^15.0.0",
@@ -29,6 +34,7 @@
     "zod": "^3.24.0"
   },
   "devDependencies": {
+    "@clerk/astro": "^2.16.7",
     "@types/animejs": "^3.1.12",
     "@types/p5": "^1.7.6",
     "@unocss/preset-wind4": "^66.5.10",

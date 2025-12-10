@@ -10,16 +10,22 @@ import { SignedIn, SignedOut, UserButton, SignInButton } from '@clerk/astro/reac
           <h1>Create Session</h1>
           <p class="subtitle">Start a new collaborative loop session</p>
           
-          <div class="info-box">
+          <!-- <div class="info-box">
             <p>
               <strong>🎵 How it works:</strong><br>
               Create a room where 2-4 people can collaborate on audio-visual loops.
               You'll get a shareable room code to invite others.
             </p>
-          </div>
+          </div> -->
 
+          <SignedOut client:only="react">
+            <SignInButton client:only="react" mode="modal" />
+          </SignedOut>
+          <SignedIn client:only="react">
+            <UserButton client:only="react" />
+          </SignedIn>
           
-          <form id="createForm" method="POST" action=>
+          <!-- <form id="createForm" method="POST" action=>
   
             <div class="form-group">
               <label for="email">Email</label>
@@ -77,79 +83,10 @@ import { SignedIn, SignedOut, UserButton, SignInButton } from '@clerk/astro/reac
                   ← Back to Home
                 </a>
             </div>
-          </form>
+          </form> -->
           
-          <div class="loading" id="loading">
-            Creating your session...
-          </div>
-          
-          <div class="error" id="error"></div>
         </div>
       </div>
     </BaseLayout>
-
-    <script>
-
-
-      
-      // const form = document.getElementById('createForm') as HTMLFormElement;
-      // const createBtn = document.getElementById('createBtn') as HTMLButtonElement;
-      // const loading = document.getElementById('loading') as HTMLDivElement;
-      // const errorDiv = document.getElementById('error') as HTMLDivElement;
-      
-      // const userId = generateUserId();
-      
-      // form.addEventListener('submit', async (e) => {
-      //   e.preventDefault();
-        
-      //   const formData = new FormData(form);
-      //   const userEmail = formData.get('userEmail') as string;
-      //   const userName = formData.get('userName') as string;
-      //   const bpm = parseInt(formData.get('bpm') as string);
-      //   const loopLength = parseInt(formData.get('loopLength') as string);
-        
-      //   if (!userName.trim()) {
-      //     showError('Please enter your name');
-      //     return;
-      //   }
-        
-      //   createBtn.disabled = true;
-      //   loading.style.display = 'block';
-      //   errorDiv.style.display = 'none';
-        
-      //   try {
-      //     const response = await fetch('/api/sessions', {
-      //       method: 'POST',
-      //       headers: {
-      //         'Content-Type': 'application/json',
-      //       },
-      //       body: JSON.stringify({
-      //         userId,
-      //         userName: userName.trim(),
-      //       }),
-      //     });
-          
-      //     if (!response.ok) {
-      //       throw new Error('Failed to create session');
-      //     }
-          
-      //     const data = await response.json();
-          
-      //     // Redirect to the authentication confirmation page
-      //   //   window.location.href = `/room/${data.roomId}?userId=${userId}&userName=${encodeURIComponent(userName)}`;
-          
-      //   } catch (error) {
-      //     console.error('Error creating session:', error);
-      //     showError('Failed to create session. Please try again.');
-      //     createBtn.disabled = false;
-      //     loading.style.display = 'none';
-      //   }
-      // });
-      
-      // function showError(message: string) {
-      //   errorDiv.textContent = message;
-      //   errorDiv.style.display = 'block';
-      // }
-    </script>
   </body>
 </html>

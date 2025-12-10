@@ -3,13 +3,19 @@ import { defineConfig } from 'astro/config';
 import UnoCSS from 'unocss/astro'
 import cloudflare from '@astrojs/cloudflare';
 import solidJs from '@astrojs/solid-js';
+import clerk from '@clerk/astro'
+import react from '@astrojs/react';
 
 // https://astro.build/config
 export default defineConfig({
 
   adapter: cloudflare(),
   output: 'server',
-  integrations: [ solidJs(), UnoCSS()],
+  integrations: [
+    clerk(), 
+    solidJs(), 
+    UnoCSS(), 
+    react()],
   outDir: '../../dist/popcorn-loop',
   vite: {
     resolve: {

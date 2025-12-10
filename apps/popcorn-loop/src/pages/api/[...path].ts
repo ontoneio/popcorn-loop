@@ -1,6 +1,6 @@
 import { Hono } from 'hono';
 import type { APIRoute } from 'astro';
-import type { Env } from '../types';
+import type { Env } from '../../types';
 import { sessionsRoute } from '@api/routes/sessions';
 
 const app = new Hono<{ Bindings: Env }>().basePath('/api');
