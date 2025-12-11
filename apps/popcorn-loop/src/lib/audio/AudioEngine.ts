@@ -4,7 +4,7 @@
 
 import { transportManager } from './TransportManager';
 import { synthManager } from './SynthManager';
-import type { LoopData, ScheduledAudioEvent } from '@workspace/shared-types';
+import type { LoopData, ScheduledAudioEvent } from '@workspace/shared/types';
 
 export class AudioEngine {
   private static instance: AudioEngine;

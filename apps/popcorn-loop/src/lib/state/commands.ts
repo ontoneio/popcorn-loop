@@ -3,7 +3,7 @@
  * Enables undo/redo functionality for state mutations
  */
 
-import type { Command, CommandType } from '@workspace/shared-types';
+import type { Command, CommandType } from '@workspace/shared/types';
 import { generateCommandId } from '@workspace/shared-utils';
 
 export abstract class BaseCommand implements Command {

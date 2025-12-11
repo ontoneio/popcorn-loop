@@ -12,7 +12,7 @@ import type {
   User,
   LoopData,
   VisualData,
-} from '@workspace/shared-types';
+} from '@workspace/shared/types';
 import { validateClientMessage, RATE_LIMIT_MAX_MESSAGES, RATE_LIMIT_WINDOW_MS } from '@workspace/shared-validators';
 
 interface SessionData {

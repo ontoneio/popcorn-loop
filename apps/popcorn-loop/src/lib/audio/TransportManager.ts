@@ -4,7 +4,7 @@
  */
 
 import * as Tone from 'tone';
-import type { TransportState } from '@workspace/shared-types';
+import type { TransportState } from '@workspace/shared/types';
 
 export class TransportManager {
   private static instance: TransportManager;

@@ -19,9 +19,9 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      '@workspace/shared-types': resolve(__dirname, './packages/shared/types/src/index.ts'),
-      '@workspace/shared-validators': resolve(__dirname, './packages/shared/validators/src/index.ts'),
-      '@workspace/shared-utils': resolve(__dirname, './packages/shared/utils/src/index.ts'),
+      '@workspace/shared/types': resolve(__dirname, './packages/shared/types/index.ts'),
+      '@workspace/shared/validators': resolve(__dirname, './packages/shared/validators/index.ts'),
+      '@workspace/shared': resolve(__dirname, './packages/shared/utils/index.ts'),
     },
   },
 });

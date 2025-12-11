@@ -5,7 +5,7 @@
 
 import { onMount, onCleanup, createSignal } from 'solid-js';
 import { p5SketchManager } from '../lib/visual';
-import type { VisualData } from '@workspace/shared-types';
+import type { VisualData } from '@workspace/shared/types';
 
 interface VisualCanvasProps {
   visualData: VisualData;

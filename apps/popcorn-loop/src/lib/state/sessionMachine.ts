@@ -4,7 +4,7 @@
  */
 
 import { setup, assign } from 'xstate';
-import type { SessionContext, SessionEvent } from '@workspace/shared-types';
+import type { SessionContext, SessionEvent } from '@workspace/shared/types';
 
 export const sessionMachine = setup({
   types: {

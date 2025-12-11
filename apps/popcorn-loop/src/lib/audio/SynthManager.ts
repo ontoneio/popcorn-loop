@@ -3,7 +3,7 @@
  */
 
 import * as Tone from 'tone';
-import type { AudioParameters, SynthType } from '@workspace/shared-types';
+import type { AudioParameters, SynthType } from '@workspace/shared/types';
 
 export class SynthManager {
   private synths: Map<string, Tone.PolySynth> = new Map();

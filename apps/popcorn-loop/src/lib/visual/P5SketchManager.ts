@@ -3,7 +3,7 @@
  */
 
 import p5 from 'p5';
-import type { VisualData } from '@workspace/shared-types';
+import type { VisualData } from '@workspace/shared/types';
 
 export type SketchInstance = p5;
 

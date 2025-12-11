@@ -33,7 +33,7 @@
 - **Validation**: @hono/zod-validator for API input validation
 
 ### Shared Packages (libs/shared/)
-- **@workspace/shared-types**: TypeScript interfaces for messages, state, events
+- **@workspace/shared/types**: TypeScript interfaces for messages, state, events
 - **@workspace/shared-validators**: Zod schemas for runtime validation (client + server)
 - **@workspace/shared-utils**: Common utilities (timing conversions, ID generation)
 
@@ -119,7 +119,7 @@ popcorn-loop/
 │       └── package.json           # App dependencies and scripts
 ├── libs/
 │   └── shared/                    # Shared code used by frontend + backend
-│       ├── types/                 # @workspace/shared-types
+│       ├── types/                 # @workspace/shared/types
 │       │   ├── src/
 │       │   │   ├── messages.ts    # WebSocket message types
 │       │   │   ├── state.ts       # Collaborative state types
@@ -164,7 +164,7 @@ popcorn-loop/
 - **Explicit return types**: All exported functions must declare return types
 - **No `any` types**: Use `unknown` with type guards or proper generics
 - **Zod validation**: Runtime validate all external inputs (WebSocket messages, API requests)
-- **Shared types**: Import from `@workspace/shared-types` for cross-boundary types
+- **Shared types**: Import from `@workspace/shared/types` for cross-boundary types
 
 ### Testing Expectations
 - **Unit tests**: All shared utilities and pure functions (aim for >80% coverage)

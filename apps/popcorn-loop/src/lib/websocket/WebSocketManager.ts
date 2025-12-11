@@ -3,7 +3,7 @@
  * Handles connection, reconnection, and message queueing
  */
 
-import type { ClientMessage, ServerMessage } from '@workspace/shared-types';
+import type { ClientMessage, ServerMessage } from '@workspace/shared/types';
 
 export interface WebSocketConfig {
   url: string;

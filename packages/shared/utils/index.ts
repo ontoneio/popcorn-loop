@@ -3,5 +3,5 @@
  * Shared utilities for Popcorn Loop
  */
 
-export * from './timing.js';
-export * from './ids.js';
+export * from './src/timing.js';
+export * from './src/ids.js';
