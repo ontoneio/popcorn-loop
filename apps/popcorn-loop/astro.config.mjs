@@ -18,6 +18,11 @@ export default defineConfig({
     react()],
   outDir: '../../dist/popcorn-loop',
   vite: {
+    server: {
+      watch: {
+        ignored: ['**/node_modules/**', '**/.git/**', '**/dist/**'],
+      }
+    },
     resolve: {
       alias: {
         '@workspace/shared-types': '/home/jam/projects/popcorn-loop/packages/shared/types/src/index.ts',

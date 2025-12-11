@@ -12,8 +12,8 @@ export const onRequest = clerkMiddleware((auth, context) => {
 }, {
     publishableKey: `${process.env.PUBLIC_CLERK_PUBLISHABLE_KEY}`,
     secretKey: `${process.env.CLERK_SECRET_KEY}`,
-    signInUrl: '/login',
-    signUpUrl: '/login',
+    signInUrl: `${process.env.PUBLIC_CLERK_SIGN_IN_URL}`,
+    signUpUrl: `${process.env.PUBLIC_CLERK_SIGN_UP_URL}`,
     afterSignInUrl: '/create',
     afterSignUpUrl: '/create',
 })
