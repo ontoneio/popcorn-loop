@@ -17,17 +17,40 @@ export default defineConfig({
     UnoCSS(), 
     react()],
   outDir: '../../dist/popcorn-loop',
-  vite: {
+   vite: {
     server: {
       watch: {
-        ignored: ['**/node_modules/**', '**/.git/**', '**/dist/**'],
+        // More aggressive ignore patterns
+        ignored: [
+          '**/node_modules/**',
+          '**/.git/**',
+          '**/dist/**',
+          '**/.astro/**',
+          '**/playwright-report/**',
+          '**/.wrangler/**',
+          '**/coverage/**',
+        ],
+        // Use polling as fallback (slower but more reliable)
+        usePolling: false,
+        // Reduce max files watched
+        awaitWriteFinish: {
+          stabilityThreshold: 100,
+          pollInterval: 100
+        }
+      },
+      fs: {
+        // Strict file system access
+        strict: true,
+        allow: [
+          `${import.meta.env.HOME}/projects/popcorn-loop`,
+        ]
       }
     },
     resolve: {
       alias: {
-        '@workspace/shared/types': '/home/jam/projects/popcorn-loop/packages/shared/types/src/index.ts',
-        '@workspace/shared-validators': '/home/jam/projects/popcorn-loop/packages/shared/validators/src/index.ts',
-        '@workspace/shared-utils': '/home/jam/projects/popcorn-loop/packages/shared/utils/src/index.ts',
+        '@workspace/shared/types': `${import.meta.env.HOME}/projects/popcorn-loop/packages/shared/types/index.ts`,
+        '@workspace/shared-validators': `${import.meta.env.HOME}/projects/popcorn-loop/packages/shared/validators/index.ts`,
+        '@workspace/shared-utils': `${import.meta.env.HOME}/projects/popcorn-loop/packages/shared/utils/index.ts`,
       },
     },
   },

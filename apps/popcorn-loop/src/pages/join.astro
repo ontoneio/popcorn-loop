@@ -1,14 +1,7 @@
 ---
+import BaseLayout from "../layouts/BaseLayout.astro"
 ---
-
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width" />
-    <title>Join Session - Popcorn Loop</title>
-    <style>
+<style>
       * { margin: 0; padding: 0; box-sizing: border-box; }
       
       body {
@@ -154,9 +147,11 @@
         font-weight: 600;
         text-align: center;
       }
-    </style>
-  </head>
-  <body>
+</style>
+<title>Join Session - Popcorn Loop</title>
+
+<BaseLayout title="Join Session - Popcorn Loop">
+
     <div class="container">
       <div class="card">
         <h1>Join Session</h1>
@@ -217,9 +212,10 @@
         <div class="error" id="error"></div>
       </div>
     </div>
+</BaseLayout>
 
-    <script>
-      import { generateUserId, isValidRoomId } from '@workspace/shared-utils';
+    <script is:inline type="module">
+      import { generateUserId, isValidRoomId } from '@workspace/shared';
       
       const form = document.getElementById('joinForm') as HTMLFormElement;
       const joinBtn = document.getElementById('joinBtn') as HTMLButtonElement;
@@ -284,5 +280,3 @@
         errorDiv.style.display = 'block';
       }
     </script>
-  </body>
-</html>

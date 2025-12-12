@@ -3,12 +3,39 @@ import '../styles/global.css';
 import 'flowbite';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
-import { SignedIn, SignedOut } from '@clerk/astro/react'
 const siteName = 'Popcorn Loop'
 const tagline = 'Collaborative Audio/Visual Creation Platform'
-const title = `${siteName} - ${tagline}`
 const author = 'Jonathan A.M.'
+const { title = `${siteName} - ${tagline}` } = Astro.props;
 ---
+
+<html lang="en">
+  <head>
+      <meta charset="utf-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1" >
+      <meta name="author" content={author} >
+      <title>{title}</title>
+      <meta name="description" content={tagline} >
+    <meta property="og:title" content={title} >
+    <meta property="og:description" content={tagline} >
+    <!-- TODO: add image for Open Graph -->
+    <!-- <meta property="og:image" content="/some-image.png"> -->
+    <meta property="og:url" content={Astro.url} >
+    <meta property="og:site_name" content={siteName} >
+    <meta name="twitter:card" content="summary_large_image" >
+    <meta name="twitter:image:alt" content="image description" >
+    <meta name="generator" content={Astro.generator} >
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  </head>
+  <body>
+    <Header />
+    <main>
+        <slot />
+    </main>
+    <Footer></Footer>    
+  </body>
+</html>
+
 <style is:global>
       * { margin: 0; padding: 0; box-sizing: border-box; }
       
@@ -190,31 +217,3 @@ const author = 'Jonathan A.M.'
         border-top: 1px solid rgba(255, 255, 255, 0.1);
       }
 </style>
-
-
-<html lang="en">
-  <head>
-      <meta charset="utf-8" />
-      <meta name="viewport" content="width=device-width, initial-scale=1" >
-      <meta name="author" content={author} >
-      <title>{title}</title>
-      <meta name="description" content={tagline} >
-    <meta property="og:title" content={title} >
-    <meta property="og:description" content={tagline} >
-    <!-- TODO: add image for Open Graph -->
-    <!-- <meta property="og:image" content="/some-image.png"> -->
-    <meta property="og:url" content={Astro.url} >
-    <meta property="og:site_name" content={siteName} >
-    <meta name="twitter:card" content="summary_large_image" >
-    <meta name="twitter:image:alt" content="image description" >
-    <meta name="generator" content={Astro.generator} >
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-  </head>
-  <body>
-    <Header />
-    <main>
-        <slot />
-    </main>
-    <Footer></Footer>    
-  </body>
-</html>
