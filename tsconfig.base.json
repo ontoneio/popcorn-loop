@@ -1,0 +1,28 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "rootDir": ".",
+    "sourceMap": true,
+    "declaration": false,
+    "moduleResolution": "bundler",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "importHelpers": true,
+    "target": "ES2022",
+    "module": "ESNext",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "skipLibCheck": true,
+    "skipDefaultLibCheck": true,
+    "strict": true,
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "baseUrl": ".",
+    "paths": {
+      "@workspace/shared/types": ["packages/shared/types/src/index.ts"],
+      "@workspace/shared-validators": ["packages/shared/validators/src/index.ts"],
+      "@workspace/shared-utils": ["packages/shared/utils/src/index.ts"],
+    },
+  },
+  "exclude": ["node_modules", "tmp", "dist"]
+}

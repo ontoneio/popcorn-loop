@@ -1,0 +1,22 @@
+---
+import { SignedIn, SignInButton, SignedOut, UserButton } from '@clerk/astro/react'
+
+---
+<header class="antialiased">
+  <nav class="bg-transparent flex flex-row px-4 lg:px-6 py-2.5">
+      <div class="flex flex-wrap justify-between items-center">
+          <div class="flex justify-start items-center">
+              <a href="/" class="flex mr-4 no-underline">
+                <div class="logo">🍿</div>
+                <span class="logo self-center whitespace-nowrap">popcorn-loop</span>
+              </a>
+            </div>
+      </div>
+      <SignedOut client:only="react">
+        <SignInButton mode="modal" client:only="react"/>
+      </SignedOut>
+      <SignedIn client:only="react">
+        <UserButton client:only="react"/>
+      </SignedIn>
+  </nav>
+</header>

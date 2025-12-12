@@ -1,0 +1,92 @@
+---
+import BaseLayout from 'src/layouts/BaseLayout.astro';
+import { SignedIn, SignedOut, UserButton, SignInButton } from '@clerk/astro/react'
+---
+
+
+    <BaseLayout>
+      <div class="container">
+        <div class="card">
+          <h1>Create Session</h1>
+          <p class="subtitle">Start a new collaborative loop session</p>
+          
+          <!-- <div class="info-box">
+            <p>
+              <strong>🎵 How it works:</strong><br>
+              Create a room where 2-4 people can collaborate on audio-visual loops.
+              You'll get a shareable room code to invite others.
+            </p>
+          </div> -->
+
+          <SignedOut client:only="react">
+            <SignInButton client:only="react" mode="modal" />
+          </SignedOut>
+          <SignedIn client:only="react">
+            <UserButton client:only="react" />
+          </SignedIn>
+          
+          <!-- <form id="createForm" method="POST" action=>
+  
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input 
+                type="email" 
+                id="userEmail" 
+                name="userEmail" 
+                placeholder="Enter your email"
+                required
+                maxlength="90"
+              />
+            </div>
+  
+            <div class="form-group">
+              <label for="userName">Your Name</label>
+              <input 
+                type="text" 
+                id="userName" 
+                name="userName" 
+                placeholder="Enter your name"
+                required
+                maxlength="50"
+              />
+            </div>
+            
+            <div class="form-group">
+              <label for="bpm">BPM (Tempo)</label>
+              <select id="bpm" name="bpm">
+                <option value="90">90 BPM - Slow & Chill</option>
+                <option value="100">100 BPM - Laid Back</option>
+                <option value="110">110 BPM - Groove</option>
+                <option value="120" selected>120 BPM - Standard</option>
+                <option value="130">130 BPM - Energetic</option>
+                <option value="140">140 BPM - Fast</option>
+              </select>
+            </div>
+            
+            <div class="form-group">
+              <label for="loopLength">Loop Length</label>
+              <select id="loopLength" name="loopLength">
+                <option value="4" selected>4 bars (~8 seconds at 120 BPM)</option>
+                <option value="8">8 bars (~16 seconds at 120 BPM)</option>
+                <option value="16">16 bars (~32 seconds at 120 BPM)</option>
+              </select>
+            </div>
+            
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary" id="createBtn">
+                  Create Session
+                </button>
+            </div>
+            
+            <div class="form-group" style="text-align: center;padding-top: 1rem;">
+                <a href="/" class="btn btn-secondary">
+                  ← Back to Home
+                </a>
+            </div>
+          </form> -->
+          
+        </div>
+      </div>
+    </BaseLayout>
+  </body>
+</html>
